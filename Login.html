@@ -11,30 +11,33 @@
 		// 	}
 		// }
 		function login() {
-			console.log(JSON.stringify({username:"wat",password:"123"}))
 			$.ajax({
 	            url:"http://127.0.0.1:8888",
-	            dataType   : 'json',
+	            // dataType   : 'json',
 	    		contentType: 'application/json; charset=UTF-8',
-	    		data: JSON.stringify({username:"wat",password:"123"}),
+	    		data: JSON.stringify({username:myform.username.value,password:myform.password.value}),
 	    		
 	            type:'post',
 	            success:function(res){
-	                alert(res.text)
+	            	document.getElementById('returnValue').innerHTML = res
 	            },
 	            fail:function(res){
-	            	alert(res.error)
+	            	console.log(res)
+	            },
+	            error: function(res){
+					console.log(res)
 	            }
         	});    
 		}
 	</script>
 </head>
 <body>
-<form name="input">
+<form name="myform">
 UserName: <input type="text" name="username"><br>
 PassWord: <input type="password" name="password"><br>
 <!-- <input type="submit" value="Submit"> -->
 </form>
-<button onclick="login()">Submit</button>
+<button onclick="login()">Submit</button></br>
+<text id = "returnValue"></text> 
 </body>
 </html>

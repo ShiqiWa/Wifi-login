@@ -15,7 +15,6 @@ class LoginHandler(BaseHTTPRequestHandler):
 		self.send_header("Access-Control-Allow-Headers", 'Content-Type')
 # 接受POST请求，获取用户名和密码，然后查数据库，看是否有效
 	def do_POST(self):
-		print "in"
 		# 获取用户名和密码
 		content_type = cgi.parse_header(self.headers['content-type'])[0]
 		print content_type;
@@ -25,11 +24,29 @@ class LoginHandler(BaseHTTPRequestHandler):
 			print post_values['username'], post_values['password']
 			username = "'" + post_values['username'] + "'"
 			password = "'" + post_values['password'] + "'"	
-			cursor = c.execute("SELECT password  from USER where username=" + "'" + post_values['username'] + "'")
-			for row in cursor:
-			   print row[0]
-			   print row[0] == post_values['password']
-			print self.headers
+			cursor = c.execute("SELECT password  from USER where username=" + "'" + post_values['username'] + "'" + " limit 1")
+			returnRow = cursor.fetchall()
+			returnSize = len(returnRow)
+			print returnSize
+			self.send_response(200)
+			self.send_header("Content-Type", "text/html")
+			self.send_header('Access-Control-Allow-Origin', '*')                
+			self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+			self.send_header("Access-Control-Allow-Headers", 'Content-Type')
+			# self.send_header("Content-Length", str(len("yes")))
+			self.end_headers()
+			if returnSize == 0:
+				self.wfile.write("no such username")
+			else:
+				for row in returnRow:
+					if row[0] == post_values['password']:
+						print "true"					   	
+						self.wfile.write("ok")
+					else:
+						print "false"
+						self.wfile.write("wrong password")
+			
+
 
 
 
