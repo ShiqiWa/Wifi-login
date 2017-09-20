@@ -2,21 +2,39 @@
 <html>
 <head>
 	<title>abc</title>
+	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript">
-		function login(){
-			var xmlhttp;
-			if(window.XMLHttpRequeat){
-				xmlhttp = new XMLHttpRequeat();
-			}
+		// function login(){
+		// 	var xmlhttp;
+		// 	if(window.XMLHttpRequeat){
+		// 		xmlhttp = new XMLHttpRequeat();
+		// 	}
+		// }
+		function login() {
+			console.log(JSON.stringify({username:"wat",password:"123"}))
+			$.ajax({
+	            url:"http://127.0.0.1:8888",
+	            dataType   : 'json',
+	    		contentType: 'application/json; charset=UTF-8',
+	    		data: JSON.stringify({username:"wat",password:"123"}),
+	    		
+	            type:'post',
+	            success:function(res){
+	                alert(res.text)
+	            },
+	            fail:function(res){
+	            	alert(res.error)
+	            }
+        	});    
 		}
 	</script>
 </head>
 <body>
-<form name="input" method="get">
+<form name="input">
 UserName: <input type="text" name="username"><br>
 PassWord: <input type="password" name="password"><br>
-<input type="submit" value="Submit">
+<!-- <input type="submit" value="Submit"> -->
 </form>
-	
+<button onclick="login()">Submit</button>
 </body>
 </html>
